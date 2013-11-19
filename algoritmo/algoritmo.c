@@ -55,7 +55,6 @@ int main()
    	}    		   		
 
     printf("\nA palavra cifrada eh: %s", palavra_cifrada);
-
     //decifra
     palavra_decifrada = new char[strlen(palavra_cifrada)];
     for(i = 0; i < strlen(chave); i++)
