@@ -18,11 +18,11 @@ int gera_um_digito_chave ()
     return r;
 }
  
-char * gera_chave(char *chave, int r)
+char * gera_chave(char *chave, int tamanho)
 {
         int i;
-        chave = new char[r];
-        for (i = 0; i<r; i++)        
+        chave = new char[tamanho];
+        for (i = 0; i<tamanho; i++)        
         {
         	int digito_randomico = gera_um_digito_chave();                	
             chave[i] = (char)digito_randomico;        
@@ -30,34 +30,24 @@ char * gera_chave(char *chave, int r)
         return chave;       
 }
  
-int main()
+char * cifra_mensagem(char *palavra, char *chave, int tamanho)
 {
-    char palavra[MAX];        
-    char palavra_cifrada[MAX];
-    char *chave;     
-    char *palavra_decifrada;
-    printf("Digite a palavra: ");
-    fflush(stdin);
-    gets(palavra);
-    printf("\nA palavra digitada e %s", palavra);
-	int i;
-	configura_start_random();        
-    chave = gera_chave(chave,strlen(palavra));
-    printf("\nO tamanho da chave eh: %d", strlen(chave));
-   	printf("\nA chave e: %s", chave);     	
-
-   	//cifra
-   	for(i = 0; i < strlen(chave); i++)
+	char * palavra_cifrada = new char[tamanho];
+	int i = 0;
+	for(i = 0; i < tamanho; i++)
    	{
    		//C = P + K (mod 26)
     	int caractere_cifrado = int(palavra[i]) + int(chave[i]) % 26;
    		palavra_cifrada[i] = (char)caractere_cifrado;
    	}    		   		
+   	return palavra_cifrada;
+}
 
-    printf("\nA palavra cifrada eh: %s", palavra_cifrada);
-    //decifra
-    palavra_decifrada = new char[strlen(palavra_cifrada)];
-    for(i = 0; i < strlen(chave); i++)
+char *decifra_mensagem(char *chave, char *palavra_cifrada, int tamanho)
+{
+	char *palavra_decifrada = new char[tamanho];
+    int i = 0;
+    for(i = 0; i < tamanho; i++)
     {
     	//C = C - K + 26 (mod 26)
     	int c = int(chave[i]);
@@ -68,10 +58,37 @@ int main()
    		else
    			caractre_decifrado = p - c  + 26 % 26;
        	palavra_decifrada[i] = (char)caractre_decifrado;    		
-    }       
-    printf("\nA palavra decifrada eh: %s", palavra_decifrada);
-    free(chave);    	
-    free(palavra_decifrada);
+    }     
+    return palavra_decifrada;  
+}
+
+int main()
+{
+    char palavra[MAX];        
+    char *palavra_cifrada;
+    char *chave;     
+    char *palavra_decifrada;
+    printf("Digite a palavra: ");
+    //fflush(stdin);
+    gets(palavra);
+    printf("\nA palavra digitada e %s", palavra);
+	int i;
+	configura_start_random();        
+    chave = gera_chave(chave,strlen(palavra));
+    printf("\nO tamanho da chave eh: %d", strlen(chave));
+   	printf("\nA chave e: %s", chave);     	
+
+   	//cifra
+   	palavra_cifrada = cifra_mensagem(palavra,chave,strlen(chave));   
+    printf("\nA palavra cifrada eh: %s", palavra_cifrada);
+    
+    //decifra
+    palavra_decifrada = decifra_mensagem(chave,palavra_cifrada,strlen(chave));
+    printf("\nA palavra decifrada eh: %s", palavra_decifrada);    
+
+    delete(chave);    	
+    delete(palavra_cifrada);
+    delete(palavra_decifrada);
     printf("\nPressione uma tecla para finalizar...");
     getchar();
     return 0;
