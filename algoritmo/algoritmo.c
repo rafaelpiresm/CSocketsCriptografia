@@ -64,11 +64,11 @@ int main()
     	int c = int(chave[i]);
     	int p = int(palavra_cifrada[i]);
     	int caractre_decifrado = 0;
-   		if (c > p)
+    	if (c > p)
    			caractre_decifrado = c - p  + 26 % 26; 
    		else
    			caractre_decifrado = p - c  + 26 % 26;
-    	palavra_decifrada[i] = (char)caractre_decifrado;    		
+       	palavra_decifrada[i] = (char)caractre_decifrado;    		
     }       
     printf("\nA palavra decifrada eh: %s", palavra_decifrada);
     free(chave);    	
