@@ -55,7 +55,7 @@ int main()
    	}    		   		
 
     printf("\nA palavra cifrada eh: %s", palavra_cifrada);
-    
+
     //decifra
     palavra_decifrada = new char[strlen(palavra_cifrada)];
     for(i = 0; i < strlen(chave); i++)
@@ -64,7 +64,6 @@ int main()
     	int c = int(chave[i]);
     	int p = int(palavra_cifrada[i]);
     	int caractre_decifrado = 0;
-
    		if (c > p)
    			caractre_decifrado = c - p  + 26 % 26; 
    		else
