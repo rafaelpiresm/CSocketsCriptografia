@@ -24,7 +24,7 @@ char * gera_chave(char *chave, int tamanho)
         chave = new char[tamanho];
         for (i = 0; i<tamanho; i++)        
         {
-        	int digito_randomico = gera_um_digito_chave();                	
+        	  int digito_randomico = gera_um_digito_chave();                	
             chave[i] = (char)digito_randomico;        
         }                        
         return chave;       
@@ -41,7 +41,7 @@ char * cifra_mensagem(char *palavra, char *chave, int tamanho)
    		palavra_cifrada[i] = (char)caractere_cifrado;
    	}    		   		
    	return palavra_cifrada;
-}
+}//m.netcombo.com.br 003131583829981
 
 char *decifra_mensagem(char *chave, char *palavra_cifrada, int tamanho)
 {
@@ -57,7 +57,7 @@ char *decifra_mensagem(char *chave, char *palavra_cifrada, int tamanho)
    			caractre_decifrado = c - p  + 26 % 26; 
    		else
    			caractre_decifrado = p - c  + 26 % 26;
-       	palavra_decifrada[i] = (char)caractre_decifrado;    		
+      palavra_decifrada[i] = (char)caractre_decifrado;    		
     }     
     return palavra_decifrada;  
 }
@@ -72,8 +72,8 @@ int main()
     //fflush(stdin);
     gets(palavra);
     printf("\nA palavra digitada e %s", palavra);
-	int i;
-	configura_start_random();        
+	  int i;
+	  configura_start_random();        
     chave = gera_chave(chave,strlen(palavra));
     printf("\nO tamanho da chave eh: %d", strlen(chave));
    	printf("\nA chave e: %s", chave);     	
