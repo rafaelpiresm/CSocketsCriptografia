@@ -30,7 +30,7 @@ char * gera_chave(char *chave, int tamanho)
         return chave;       
 }
  
-char * cifra_mensagem(char *palavra, char *chave, int tamanho)
+char *cifra_mensagem(char *palavra, char *chave, int tamanho)
 {
 	char * palavra_cifrada = new char[tamanho];
 	int i = 0;

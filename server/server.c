@@ -46,11 +46,11 @@ int main (int argc, char **argv)
    {    
        clilen = sizeof(cliaddr);
        connfd = accept (listenfd, (struct sockaddr *) &cliaddr, &clilen);
-       printf("%s\n","Received request...");
+       printf("%s\n","Conexão recebida...");
 
        while ( (n = recv(connfd, buf, MAXLINE,0)) > 0)  
        {
-           printf("%s","Texto recebido: ");
+           printf("%s","Texto recebido: ");           
            puts(buf);           
            clean_buf(buf);
            //send(connfd, buf, n, 0);
