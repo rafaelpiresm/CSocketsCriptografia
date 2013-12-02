@@ -18,7 +18,7 @@ int gera_um_digito_chave ()
     return r;
 }
  
-char * gera_chave(char *chave, int tamanho)
+char *gera_chave(char *chave, int tamanho)
 {
         int i;
         chave = new char[tamanho];
@@ -41,7 +41,7 @@ char *cifra_mensagem(char *palavra, char *chave, int tamanho)
    		palavra_cifrada[i] = (char)caractere_cifrado;
    	}    		   		
    	return palavra_cifrada;
-}//m.netcombo.com.br 003131583829981
+}
 
 char *decifra_mensagem(char *chave, char *palavra_cifrada, int tamanho)
 {

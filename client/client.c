@@ -1,11 +1,4 @@
-﻿//fonte do client
-// 1 - na primeira conexão receberá uma chave pública e irá mantê-la
-// 2 - recebe texto através da entrada padrão  (scanf)
-// 3 - usa os algorimos para criptografar a mensagem
-// 4 - conecta no server e entrega a mensagem
-
-
-#include <stdlib.h>
+﻿#include <stdlib.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -13,38 +6,76 @@
 #include <string.h>
 #include <arpa/inet.h>
 
-#define MAXLINE 4096 /*max text line length*/
-#define SERV_PORT 3000 /*port*/
+#define MAXLINE 4096 /*tamanho máximo de entrada*/
+#define SERV_PORT 3000 /*porta*/
+
+char *cifra_mensagem(char *palavra, char *chave, int tamanho)
+{
+    //alocando memória dinamicamente para a chave
+    char * palavra_cifrada = new char[tamanho];
+    int i = 0;
+    for(i = 0; i < tamanho; i++)
+    {
+        //algoritmo para a cifra damensagem
+        //C = P + K (mod 26)
+        int caractere_cifrado = int(palavra[i]) + int(chave[i]) % 26;
+        palavra_cifrada[i] = (char)caractere_cifrado;
+    }                   
+    return palavra_cifrada;
+}
+
+
+void configura_start_random()
+{
+    srand(time(NULL));
+}
+
+int gera_um_digito_chave ()
+{
+    int r = 1 + (rand() % 25);
+    return r;
+}
+ 
+char *gera_chave(char *chave, int tamanho)
+{
+        int i;
+        chave = new char[tamanho];
+        for (i = 0; i<tamanho; i++)        
+        {
+              int digito_randomico = gera_um_digito_chave();                    
+            chave[i] = (char)digito_randomico;        
+        }                        
+        return chave;       
+}
+
 
 int main(int argc, char **argv)
 {
     int sockfd;
     struct sockaddr_in servaddr;
     char sendline[MAXLINE], recvline[MAXLINE];
-
-    //basic check of the arguments
-    //additional checks can be inserted
+    char *chave;
+    
     if (argc !=2) 
     {
-        perror("Use da seguinte forma: TCPClient <IP do servidor>");
+        perror("Use da seguinte forma: client <IP do servidor>");
         exit(1);
     }
 
-    //Create a socket for the client
-    //If sockfd<0 there was an error in the creation of the socket
+    //Criando socket para o cliente    
     if ((sockfd = socket (AF_INET, SOCK_STREAM, 0)) <0) 
     {
         perror("Problema criando o socket");
         exit(2);
     }
 
-    //Creation of the socket
+    //configurando o socket com IP e porta
     memset(&servaddr, 0, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
     servaddr.sin_addr.s_addr= inet_addr(argv[1]);
-    servaddr.sin_port =  htons(SERV_PORT); //convert to big-endian order
+    servaddr.sin_port =  htons(SERV_PORT); 
 
-    //Connection of the client to the socket
+    //fazendo a conexão com o servidor
     if (connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr))<0) 
     {
         perror("Problema na conexão com o servidor");
@@ -55,28 +86,47 @@ int main(int argc, char **argv)
     	printf("\nConexão estabelecida com sucesso!\n");
     	printf("Host: %s",argv[1]);
     }
-    printf("\n\nDigite a mensagem a ser criptografada e enviada ao servidor: ");
+
+    printf("\n\nDigite a mensagem a ser criptografada e enviada ao servidor:\n");
     while (fgets(sendline, MAXLINE, stdin) != NULL) 
     {
-        int qtd_data_received = send(sockfd, sendline, strlen(sendline), 0);
+        //configura função randômica para geração automática da chave
+        configura_start_random();        
+
+        //gera a chave de acordo com o tamanho da entrada
+        chave = gera_chave(chave,strlen(sendline));
+
+        //cifra a mensagem informada de acordo com a chave gerada
+        char *palavra_cifrada = cifra_mensagem(sendline,chave,strlen(chave));   
+        printf("A palavra cifrada é: %s\n",palavra_cifrada);
+        printf("A chave é: %s\n",chave);
+
+        //envio da mensagem cifrada
+        int qtd_data_received = send(sockfd, palavra_cifrada, strlen(palavra_cifrada), 0);
+
         if (qtd_data_received > 0)
-        	printf("A mensagem foi entregue!");
+        	printf("A palavra cifrada foi entregue!\n");
         else
         {
         	printf("A mensagem não pode ser entregue!");
         	exit(3);
-        }
-        printf("\n\nDigite a mensagem a ser criptografada e enviada ao servidor: ");
+        }        
 
-        /*if (recv(sockfd, recvline, MAXLINE,0) == 0)
+        //envio chave gerada
+        qtd_data_received = send(sockfd, chave, strlen(chave), 0);
+        if (qtd_data_received > 0)
+            printf("A chave foi entregue!\n");
+        else
         {
-            //error: server terminated prematurely
-            perror("O servidor encerrou prematuramente.");
-            exit(4);
-        }*/
-        /*printf("%s\n", "String received from the server: ");
-        fputs(recvline, stdout);*/
-    }
+            printf("A chave não pode ser entregue!\n");
+            exit(3);
+        }                   
 
+        printf("\n\nDigite a mensagem a ser criptografada e enviada ao servidor:\n");
+
+        //desalocando memória alocada dinamicamente para a chave
+        delete(chave);
+    }
+    //saída OK para o SO
     exit(0);
 }
