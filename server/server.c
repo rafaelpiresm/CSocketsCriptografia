@@ -62,16 +62,13 @@ int main (int argc, char **argv)
    listen(listenfd, MAX_CONNECTIONS);
 
    printf("%s\n","Server online... Aceitando novas conexões...");
-   
-   
+
+   clilen = sizeof(cliaddr);
+   connfd = accept (listenfd, (struct sockaddr *) &cliaddr, &clilen);
+   printf("%s\n","Conexão recebida... aguardando mensagem...");
 
    for ( ; ; ) 
    {   
-      clilen = sizeof(cliaddr);
-      connfd = accept (listenfd, (struct sockaddr *) &cliaddr, &clilen);
-
-      printf("%s\n","Conexão recebida... aguardando mensagem...");
-      
       //recebe a mensagem
       n = recv(connfd, buf, MAXLINE,0);             
       if (n <= 0) 
@@ -92,12 +89,12 @@ int main (int argc, char **argv)
       char *mensagem = decifra_mensagem(chave,buf,strlen(buf));
 
       printf("A mensagem decifrada é: %s", mensagem);       
-      //delete(mensagem);
+      delete(mensagem);
 
       //limpa as variáveis de conteúdo
       clean_entrada(buf);
       clean_entrada(chave);
-      clean_entrada(mensagem);            
+      //clean_entrada(mensagem);            
       puts("================================================================");
     }   
    //encerra a conexão
