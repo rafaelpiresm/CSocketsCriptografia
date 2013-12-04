@@ -67,8 +67,8 @@ int main (int argc, char **argv)
 
    for ( ; ; ) 
    {   
-      char *buf = new char[MAXLINE];
-      char *chave = new char[MAXLINE];
+      char buf[MAXLINE];
+      char chave[MAXLINE];
 
       //recebe a mensagem
       n = recv(connfd, buf, MAXLINE,0);             
@@ -93,12 +93,12 @@ int main (int argc, char **argv)
       printf("\n%s","A mensagem decifrada é: ");
       puts(mensagem);      
       delete(mensagem);
-      delete(chave);
-      delete(buf);
+      //delete(chave);
+      //delete(buf);
       
       //limpa as variáveis de conteúdo
-      //clean_entrada(buf);
-      //clean_entrada(chave);
+      clean_entrada(buf);
+      clean_entrada(chave);
       //clean_entrada(mensagem);            
       
     }   
