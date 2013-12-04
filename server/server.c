@@ -79,8 +79,9 @@ int main (int argc, char **argv)
          exit(1);
       }
 
-      printf("%s\n","Mensagem criptografada recebida:");
-      puts(buf);
+      //printf("%s\n","Mensagem criptografada recebida:");
+      //puts(buf);
+      printf("Mensagem criptografada recebida: %s\n",buf);
 
       //recebe a chave
       n = recv(connfd, chave, MAXLINE,0);             
@@ -88,8 +89,9 @@ int main (int argc, char **argv)
       //decifra a mensagem
       char *mensagem = decifra_mensagem(chave,buf,strlen(buf));
 
-      printf("%s\n","A mensagem decifrada é: ");
-      puts(mensagem);
+      //printf("%s\n","A mensagem decifrada é: ");
+      //puts(mensagem);
+      printf("A mensagem decifrada é: %s\n",mensagem);
       delete(mensagem);
 
       //limpa as variáveis de conteúdo
