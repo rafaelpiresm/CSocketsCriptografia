@@ -84,21 +84,22 @@ int main(int argc, char **argv)
     servaddr.sin_addr.s_addr= inet_addr(argv[1]);
     servaddr.sin_port =  htons(SERV_PORT);   
 
+    //fazendo a conexão com o servidor
+    if (connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr))<0) 
+    {
+        perror("Problema na conexão com o servidor");
+        exit(3);
+    }
+    else
+    {
+        printf("\nConexão estabelecida com sucesso!\n");
+        printf("Host: %s",argv[1]);
+    }
+
+
     printf("\n\nDigite a mensagem a ser criptografada e enviada ao servidor:\n");
     while (fgets(sendline, MAXLINE, stdin) != NULL) 
-    {
-          //fazendo a conexão com o servidor
-        if (connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr))<0) 
-        {
-            //perror("Problema na conexão com o servidor");
-            //exit(3);
-        }
-        else
-        {
-            printf("\nConexão estabelecida com sucesso!\n");
-            printf("Host: %s",argv[1]);
-        }
-
+    {        
         //configura função randômica para geração automática da chave
         configura_start_random();        
 
