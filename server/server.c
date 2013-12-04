@@ -88,7 +88,8 @@ int main (int argc, char **argv)
       //decifra a mensagem
       char *mensagem = decifra_mensagem(chave,buf,strlen(buf));
 
-      printf("A mensagem decifrada é: %s", mensagem);       
+      printf("%s\n","A mensagem decifrada é: ");
+      puts(mensagem);
       delete(mensagem);
 
       //limpa as variáveis de conteúdo
