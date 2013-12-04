@@ -15,6 +15,7 @@ void clean_entrada(char *buf)
 	int i;
 	for(i = 0; i < MAXLINE; i++)
 		buf[i] = '\0';
+
 }
 
 char *decifra_mensagem(char *chave, char *palavra_cifrada, int tamanho)
@@ -89,11 +90,9 @@ int main (int argc, char **argv)
       //decifra a mensagem
       char *mensagem = decifra_mensagem(chave,buf,strlen(buf));
 
-      printf("%s\n\n\n\n","A mensagem decifrada é: ");
+      printf("\n\n\n\n%s","A mensagem decifrada é: ");
       puts(mensagem);
-      //printf("A mensagem decifrada é: %s\n",mensagem);
-      //printf("================================================================");
-      
+      fflush(stdout);
       delete(mensagem);
       //limpa as variáveis de conteúdo
       clean_entrada(buf);
