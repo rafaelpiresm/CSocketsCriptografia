@@ -87,6 +87,8 @@ int main (int argc, char **argv)
        
       //decifra a mensagem
       char *mensagem = decifra_mensagem(chave,buf,strlen(buf));
+      
+      fflush(stdout);
       printf("A mensagem decifrada é: %s", mensagem);       
 
       //limpa as variáveis de conteúdo
@@ -94,9 +96,6 @@ int main (int argc, char **argv)
       clean_entrada(chave);
       clean_entrada(mensagem);
       //delete(mensagem);
-      mensagem = NULL;
-
-
       puts("================================================================");
     }   
    //encerra a conexão
