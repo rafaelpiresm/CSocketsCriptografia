@@ -96,7 +96,7 @@ int main (int argc, char **argv)
       clean_entrada(buf);
       clean_entrada(chave);
       //clean_entrada(mensagem);            
-      puts("================================================================");
+      printf("================================================================");
     }   
    //encerra a conexão
    close(connfd);
