@@ -20,7 +20,8 @@ void clean_entrada(char *buf)
 char *decifra_mensagem(char *chave, char *palavra_cifrada, int tamanho)
 {  
   //alocando memória dinamicamente para a palavra a ser decifrada
-  char *palavra_decifrada = new char[tamanho];
+  //char *palavra_decifrada = new char[tamanho];
+  char *palavra_decifrada = malloc(sizeof(char) * tamanho);
   int i = 0;
   for(i = 0; i < tamanho; i++)
   {
