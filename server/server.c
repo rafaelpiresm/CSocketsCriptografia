@@ -92,13 +92,14 @@ int main (int argc, char **argv)
       //printf("%s\n","A mensagem decifrada é: ");
       //puts(mensagem);
       printf("A mensagem decifrada é: %s\n",mensagem);
+      printf("================================================================");
       delete(mensagem);
 
       //limpa as variáveis de conteúdo
       clean_entrada(buf);
       clean_entrada(chave);
       //clean_entrada(mensagem);            
-      printf("================================================================");
+      
     }   
    //encerra a conexão
    close(connfd);
