@@ -93,7 +93,7 @@ int main (int argc, char **argv)
       clean_entrada(buf);
       clean_entrada(chave);
       clean_entrada(mensagem);
-      delete(mensagem);
+      //delete(mensagem);
       mensagem = NULL;
 
 
