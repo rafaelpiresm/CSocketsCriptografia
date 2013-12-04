@@ -94,7 +94,7 @@ int main (int argc, char **argv)
       //limpa as variáveis de conteúdo
       clean_entrada(buf);
       clean_entrada(chave);
-      //clean_entrada(mensagem);            
+      clean_entrada(mensagem);            
       puts("================================================================");
     }   
    //encerra a conexão

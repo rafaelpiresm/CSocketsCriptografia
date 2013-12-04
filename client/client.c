@@ -9,10 +9,19 @@
 #define MAXLINE 4096 /*tamanho máximo de entrada*/
 #define SERV_PORT 3000 /*porta*/
 
+
+void clean_entrada(char *buf)
+{
+    int i;
+    for(i = 0; i < MAXLINE; i++)
+        buf[i] = '\0';
+}
+
+
 char *cifra_mensagem(char *palavra, char *chave, int tamanho)
 {
     //alocando memória dinamicamente para a chave
-    char * palavra_cifrada = new char[tamanho];
+    char *palavra_cifrada = new char[tamanho];
     int i = 0;
     for(i = 0; i < tamanho; i++)
     {
@@ -123,9 +132,14 @@ int main(int argc, char **argv)
         }                   
 
         printf("\n\nDigite a mensagem a ser criptografada e enviada ao servidor:\n");
-
         //desalocando memória alocada dinamicamente para a chave
+
+        delete(palavra_cifrada);
         delete(chave);
+        clean_entrada(palavra_cifrada);
+        clean_entrada(chave);
+        
+
     }
     //saída OK para o SO
     exit(0);
