@@ -10,12 +10,12 @@
 #define SERV_PORT 3000 /*porta*/
 #define MAX_CONNECTIONS 8 /*número máximo de conexões*/
 
-void clean_entrada(char *buf)
+char* clean_entrada(char buf[])
 {
 	int i;
 	for(i = 0; i < MAXLINE; i++)
 		buf[i] = '\0';
-
+  return buf;
 }
 
 char *decifra_mensagem(char *chave, char *palavra_cifrada, int tamanho)
@@ -90,10 +90,11 @@ int main (int argc, char **argv)
       //decifra a mensagem
       char *mensagem = decifra_mensagem(chave,buf,strlen(buf));
 
-      printf("\n\n\n\n%s","A mensagem decifrada é: ");
+      printf("\n%s","A mensagem decifrada é: ");
       puts(mensagem);
       fflush(stdout);
       delete(mensagem);
+      
       //limpa as variáveis de conteúdo
       clean_entrada(buf);
       clean_entrada(chave);

@@ -138,8 +138,7 @@ int main(int argc, char **argv)
         delete(chave);
         clean_entrada(palavra_cifrada);
         clean_entrada(chave);
-        
-
+        fflush(stdin);
     }
     //saída OK para o SO
     exit(0);
