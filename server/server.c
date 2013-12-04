@@ -94,7 +94,7 @@ int main (int argc, char **argv)
       clean_entrada(chave);
       //clean_entrada(mensagem);
       delete(mensagem);
-      clean_entrada(mensagem);
+      mensagem = NULL;
 
       puts("================================================================");
     }   
