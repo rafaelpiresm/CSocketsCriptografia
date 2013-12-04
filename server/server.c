@@ -8,7 +8,7 @@
 
 #define MAXLINE 4096 /*tamanho máximo da entrada*/
 #define SERV_PORT 3000 /*porta*/
-#define MAX_CONNECTIONS 8 /*número máximo de conexões*/
+#define MAX_CONNECTIONS 1 /*número máximo de conexões*/
 
 char* clean_entrada(char buf[])
 {
@@ -21,7 +21,8 @@ char* clean_entrada(char buf[])
 char *decifra_mensagem(char *chave, char *palavra_cifrada, int tamanho)
 {  
   //alocando memória dinamicamente para a palavra a ser decifrada
-  char *palavra_decifrada = new char[tamanho];  
+  //char *palavra_decifrada = new char[tamanho];  
+  char *palavra_decifrada = (char *)malloc(sizeof(char) * tamanho);
   int i = 0;
   for(i = 0; i < tamanho; i++)
   {
@@ -62,13 +63,16 @@ int main (int argc, char **argv)
    printf("%s\n","Server online... Aceitando novas conexões...");
 
    clilen = sizeof(cliaddr);
-   connfd = accept (listenfd, (struct sockaddr *) &cliaddr, &clilen);
+   connfd = accept (listenfd, (struct sockaddr *) &cliaddr, &clilen);      
    printf("%s\n","Conexão recebida... aguardando mensagem...");
+   
 
    for ( ; ; ) 
-   {   
-      char buf[MAXLINE];
-      char chave[MAXLINE];
+   {  
+      //char *buf = new char[MAXLINE];
+      char *buf = (char *)malloc(sizeof(char) * MAXLINE);
+      char *chave = (char *)malloc(sizeof(char) * MAXLINE);
+      //char *chave = new char[MAXLINE];
 
       //recebe a mensagem
       n = recv(connfd, buf, MAXLINE,0);             
@@ -92,13 +96,13 @@ int main (int argc, char **argv)
 
       printf("\n%s","A mensagem decifrada é: ");
       puts(mensagem);      
-      delete(mensagem);
-      //delete(chave);
-      //delete(buf);
+      free(mensagem);
+      free(chave);
+      free(buf);
       
       //limpa as variáveis de conteúdo
-      clean_entrada(buf);
-      clean_entrada(chave);
+      //clean_entrada(buf);
+      //clean_entrada(chave);
       //clean_entrada(mensagem);            
       
     }   

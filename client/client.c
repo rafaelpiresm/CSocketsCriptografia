@@ -82,23 +82,23 @@ int main(int argc, char **argv)
     memset(&servaddr, 0, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
     servaddr.sin_addr.s_addr= inet_addr(argv[1]);
-    servaddr.sin_port =  htons(SERV_PORT); 
-
-    //fazendo a conexão com o servidor
-    if (connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr))<0) 
-    {
-        perror("Problema na conexão com o servidor");
-        exit(3);
-    }
-    else
-    {
-    	printf("\nConexão estabelecida com sucesso!\n");
-    	printf("Host: %s",argv[1]);
-    }
+    servaddr.sin_port =  htons(SERV_PORT);   
 
     printf("\n\nDigite a mensagem a ser criptografada e enviada ao servidor:\n");
     while (fgets(sendline, MAXLINE, stdin) != NULL) 
     {
+          //fazendo a conexão com o servidor
+        if (connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr))<0) 
+        {
+            //perror("Problema na conexão com o servidor");
+            //exit(3);
+        }
+        else
+        {
+            printf("\nConexão estabelecida com sucesso!\n");
+            printf("Host: %s",argv[1]);
+        }
+
         //configura função randômica para geração automática da chave
         configura_start_random();        
 
@@ -112,6 +112,8 @@ int main(int argc, char **argv)
 
         //envio da mensagem cifrada
         int qtd_data_received = send(sockfd, palavra_cifrada, strlen(palavra_cifrada), 0);
+        delete(palavra_cifrada);
+        clean_entrada(palavra_cifrada);
 
         if (qtd_data_received > 0)
         	printf("A palavra cifrada foi entregue!\n");
@@ -123,6 +125,9 @@ int main(int argc, char **argv)
 
         //envio chave gerada
         qtd_data_received = send(sockfd, chave, strlen(chave), 0);
+        delete(chave);        
+        clean_entrada(chave);
+
         if (qtd_data_received > 0)
             printf("A chave foi entregue!\n");
         else
@@ -134,11 +139,9 @@ int main(int argc, char **argv)
         printf("\n\nDigite a mensagem a ser criptografada e enviada ao servidor:\n");
         //desalocando memória alocada dinamicamente para a chave
 
-        delete(palavra_cifrada);
-        delete(chave);
-        clean_entrada(palavra_cifrada);
-        clean_entrada(chave);
-        fflush(stdin);
+       
+       
+        fflush(stdout);
     }
     //saída OK para o SO
     exit(0);
