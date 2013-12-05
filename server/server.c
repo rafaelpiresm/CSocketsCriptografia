@@ -47,9 +47,6 @@ int main (int argc, char **argv)
 {
    int listenfd, connfd, n;
    socklen_t clilen;
-   
-   char buf[MAXLINE];
-   char chave[MAXLINE];
 
    struct sockaddr_in cliaddr, servaddr;
 
@@ -74,6 +71,8 @@ int main (int argc, char **argv)
 
    for ( ; ; ) 
    {   
+      char *buf = new char[MAXLINE];
+      char *chave = new char[MAXLINE];
       //recebe a mensagem
       n = recv(connfd, buf, MAXLINE,0);             
       if (n <= 0) 
@@ -96,9 +95,11 @@ int main (int argc, char **argv)
       printf("A mensagem decifrada é: \n%s", mensagem);           
 
       //limpa as variáveis de conteúdo
-      clean_entrada(buf);
-      clean_entrada(chave);
+      //clean_entrada(buf);
+      //clean_entrada(chave);
       delete(mensagem);
+      delete(chave);
+      delete(buf);
       //clean_entrada(mensagem);      
 
       puts("================================================================");
