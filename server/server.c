@@ -66,8 +66,8 @@ int main (int argc, char **argv)
    printf("%s\n","Conexão recebida... aguardando mensagem...");
 
    for ( ; ; ) 
-   {   
-      //char *buf = new char[MAXLINE];
+   {  
+
     char *buf = new char[MAXLINE];
     char *chave = new char[MAXLINE];
 
@@ -87,18 +87,20 @@ int main (int argc, char **argv)
     //recebe a chave
     printf("Tamanho buffer: %d\n",strlen(buf));
     n = recv(connfd, chave, MAXLINE,0);             
-     printf("Tamanho chave: %d",strlen(chave));
+    printf("Tamanho chave: %d",strlen(chave));
     //decifra a mensagem
     char *mensagem = decifra_mensagem(chave,buf,strlen(buf));
 
-    printf("\n%s","A mensagem decifrada é: ");
+    printf("\n\n%s","A mensagem decifrada é: ");
     puts(mensagem); 
     free(mensagem);
       
-      //limpa as variáveis de conteúdo
-      buf = NULL;
-      chave = NULL;
+    //limpa as variáveis de conteúdo
+    buf = NULL;
+    chave = NULL;
+    
     }   
+
    //encerra a conexão
    close(connfd);
    close(listenfd);
