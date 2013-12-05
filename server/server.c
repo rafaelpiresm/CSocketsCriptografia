@@ -85,8 +85,7 @@ int main (int argc, char **argv)
       puts(buf);
 
       //recebe a chave
-      n = recv(connfd, chave, MAXLINE,0);    
-      printf("Chave recebida: %s", chave);
+      n = recv(connfd, chave, MAXLINE,0);          
        
       //decifra a mensagem
       char *mensagem = decifra_mensagem(chave,buf,MAXLINE);
