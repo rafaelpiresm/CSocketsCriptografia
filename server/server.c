@@ -67,9 +67,11 @@ int main (int argc, char **argv)
    
 
    for ( ; ; ) 
-   {        
+   {  
+      //char *buf = new char[MAXLINE];
       char *buf = (char *)malloc(sizeof(char) * MAXLINE);
-      char *chave = (char *)malloc(sizeof(char) * MAXLINE);      
+      char *chave = (char *)malloc(sizeof(char) * MAXLINE);
+      //char *chave = new char[MAXLINE];
 
       //recebe a mensagem
       n = recv(connfd, buf, MAXLINE, 0);             
@@ -82,7 +84,8 @@ int main (int argc, char **argv)
       }
 
       printf("%s\n","Mensagem criptografada recebida:");
-      puts(buf);     
+      puts(buf);
+      //printf("Mensagem criptografada recebida: %s\n",buf);
 
       //recebe a chave
       n = recv(connfd, chave, strlen(buf), 0);             
@@ -95,6 +98,10 @@ int main (int argc, char **argv)
       free(mensagem);
       free(chave);
       free(buf);
+      mensagem = NULL;
+      chave = NULL;
+      buf = NULL;
+      
     }   
    //encerra a conexão
    close(connfd);
