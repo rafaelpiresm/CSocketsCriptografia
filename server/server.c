@@ -69,7 +69,7 @@ int main (int argc, char **argv)
    {   
       char *buf = new char[MAXLINE];
       char *chave = new char[MAXLINE];
-      
+
       //recebe a mensagem
       n = recv(connfd, buf, MAXLINE,0);             
       if (n <= 0) 

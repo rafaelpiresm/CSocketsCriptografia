@@ -127,7 +127,7 @@ int main(int argc, char **argv)
         }        
 
         //envio chave gerada
-        qtd_data_received = send(sockfd, chave, strlen(chave), 0);
+        qtd_data_received = send(sockfd, chave, MAXLINE, 0);
          
         
 
