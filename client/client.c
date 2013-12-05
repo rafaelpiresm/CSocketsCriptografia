@@ -118,9 +118,7 @@ int main(int argc, char **argv)
         {
             printf("A chave não pode ser entregue!\n");
             exit(3);
-        }                   
-
-        printf("\nSENDLINE: %s",sendline);
+        }                           
 
         printf("\n\nDigite a mensagem a ser criptografada e enviada ao servidor:\n");
 
