@@ -27,10 +27,10 @@ char *decifra_mensagem(char *chave, char *palavra_cifrada, int tamanho)
   {
     //algoritmo para decifrar a mensagem
     //C = C - K + 26 (mod 26)
-    //int c = int(chave[i]);
-    int c = (int)chave[i];
-    //int p = int(palavra_cifrada[i]);
-    int p = (int)palavra_cifrada[i];
+    int c = int(chave[i]);
+    //int c = (int)chave[i];
+    int p = int(palavra_cifrada[i]);
+    //int p = (int)palavra_cifrada[i];
     int caractre_decifrado = 0;
     if (c > p)
       caractre_decifrado = c - p  + 26 % 26; 
