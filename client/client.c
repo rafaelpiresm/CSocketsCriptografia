@@ -5,6 +5,7 @@
 #include <netinet/in.h>
 #include <string.h>
 #include <arpa/inet.h>
+#include <unistd.h>
 
 #define MAXLINE 4096 /*tamanho máximo de entrada*/
 #define SERV_PORT 3000 /*porta*/
