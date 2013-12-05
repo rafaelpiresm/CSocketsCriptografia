@@ -21,7 +21,7 @@ char *decifra_mensagem(char *chave, char *palavra_cifrada, int tamanho)
 {  
   //alocando memória dinamicamente para a palavra a ser decifrada
   //char *palavra_decifrada = new char[tamanho];
-  char *palavra_decifrada = (char *)malloc(sizeof(char) * tamanho);
+  char *palavra_decifrada = (char *)malloc(sizeof(char) * tamanho + 1);
   int i = 0;
   for(i = 0; i < tamanho; i++)
   {
@@ -90,7 +90,7 @@ int main (int argc, char **argv)
        
       //decifra a mensagem
       char *mensagem = decifra_mensagem(chave,buf,strlen(buf));
-      printf("A mensagem decifrada é: %s", mensagem);       
+      printf("A mensagem decifrada é: \n%s", mensagem);       
 
       //limpa as variáveis de conteúdo
       clean_entrada(buf);
