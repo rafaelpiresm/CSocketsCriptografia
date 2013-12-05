@@ -37,9 +37,7 @@ char *decifra_mensagem(char *chave, char *palavra_cifrada, int tamanho)
     else
       caractre_decifrado = p - c  + 26 % 26;
       palavra_decifrada[i] = char(caractre_decifrado);
-  }     
-  printf("Palavra decifrada na FUNCAO: %s\n", palavra_decifrada);
-  printf("Chave  na FUNCAO: %s\n", chave);
+  }       
   return palavra_decifrada;  
 }
 
@@ -95,11 +93,9 @@ int main (int argc, char **argv)
       printf("A mensagem decifrada é: \n%s", mensagem);           
 
       //limpa as variáveis de conteúdo
-      //clean_entrada(buf);
-      //clean_entrada(chave);
+      clean_entrada(buf);
+      clean_entrada(chave);
       delete(mensagem);
-      delete(chave);
-      delete(buf);
       //clean_entrada(mensagem);      
 
       puts("================================================================");
