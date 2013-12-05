@@ -10,11 +10,11 @@
 #define SERV_PORT 3000 /*porta*/
 #define MAX_CONNECTIONS 1 /*número máximo de conexões*/
 
-void clean_entrada(char buf[])
+void clean_entrada(char *buf)
 {
-	int i;
-	for(i = 0; i < MAXLINE; i++)
-		buf[i] = '\0';  
+        int i;
+        for(i = 0; i < MAXLINE; i++)
+                buf[i] = '\0';  
 }
 
 char *decifra_mensagem(char *chave, char *palavra_cifrada, int tamanho)
@@ -68,38 +68,36 @@ int main (int argc, char **argv)
    for ( ; ; ) 
    {   
       //char *buf = new char[MAXLINE];
-    char buf[MAXLINE];
-    char chave[MAXLINE];
+    char *buf = new char[MAXLINE];
+    char *chave = new char[MAXLINE];
 
       //recebe a mensagem
-      n = recv(connfd, buf, MAXLINE,0);             
-      if (n <= 0) 
-      {
-         perror("Falha na leitura. Encerrando servidor.");
-         close(connfd);
-         close (listenfd);
-         exit(1);
-      }
+    n = recv(connfd, buf, MAXLINE,0);             
+    if (n <= 0) 
+    {
+       perror("Falha na leitura. Encerrando servidor.");
+       close(connfd);
+       close (listenfd);
+       exit(1);
+    }
 
-      printf("%s\n","Mensagem criptografada recebida:");
-      puts(buf);     
+    printf("%s\n","Mensagem criptografada recebida:");
+    puts(buf);     
 
-      //recebe a chave
-      n = recv(connfd, chave, MAXLINE,0);             
-       
-      //decifra a mensagem
-      char *mensagem = decifra_mensagem(chave,buf,strlen(buf));
+    //recebe a chave
+    printf("Tamanho buffer: %d\n",strlen(buf));
+    n = recv(connfd, chave, MAXLINE,0);             
+     printf("Tamanho chave: %d",strlen(chave));
+    //decifra a mensagem
+    char *mensagem = decifra_mensagem(chave,buf,strlen(buf));
 
-      printf("\n%s","A mensagem decifrada é: ");
-      puts(mensagem);
-      fflush(stdout);
-      free(mensagem);
+    printf("\n%s","A mensagem decifrada é: ");
+    puts(mensagem); 
+    free(mensagem);
       
       //limpa as variáveis de conteúdo
-      clean_entrada(buf);
-      clean_entrada(chave);
-      //clean_entrada(mensagem);            
-      
+      buf = NULL;
+      chave = NULL;
     }   
    //encerra a conexão
    close(connfd);
