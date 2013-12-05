@@ -38,6 +38,7 @@ char *decifra_mensagem(char *chave, char *palavra_cifrada, int tamanho)
       caractre_decifrado = p - c  + 26 % 26;
       palavra_decifrada[i] = char(caractre_decifrado);
   }     
+  printf("Palavra decifrada na FUNCAO: %s\n", palavra_decifrada);
   return palavra_decifrada;  
 }
 
