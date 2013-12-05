@@ -8,20 +8,19 @@
 
 #define MAXLINE 4096 /*tamanho máximo da entrada*/
 #define SERV_PORT 3000 /*porta*/
-#define MAX_CONNECTIONS 1 /*número máximo de conexões*/
+#define MAX_CONNECTIONS 8 /*número máximo de conexões*/
 
 void clean_entrada(char *buf)
 {
         int i;
         for(i = 0; i < MAXLINE; i++)
-                buf[i] = '\0';  
+                buf[i] = '\0';
 }
 
 char *decifra_mensagem(char *chave, char *palavra_cifrada, int tamanho)
 {  
   //alocando memória dinamicamente para a palavra a ser decifrada
-  //char *palavra_decifrada = new char[tamanho];  
-  char *palavra_decifrada = (char *)malloc(sizeof(char) * tamanho);
+  char *palavra_decifrada = new char[tamanho];
   int i = 0;
   for(i = 0; i < tamanho; i++)
   {
@@ -43,6 +42,9 @@ int main (int argc, char **argv)
 {
    int listenfd, connfd, n;
    socklen_t clilen;
+   
+   char buf[MAXLINE];
+   char chave[MAXLINE];
 
    struct sockaddr_in cliaddr, servaddr;
 
@@ -66,41 +68,34 @@ int main (int argc, char **argv)
    printf("%s\n","Conexão recebida... aguardando mensagem...");
 
    for ( ; ; ) 
-   {  
-
-    char *buf = new char[MAXLINE];
-    char *chave = new char[MAXLINE];
-
+   {   
       //recebe a mensagem
-    n = recv(connfd, buf, MAXLINE,0);             
-    if (n <= 0) 
-    {
-       perror("Falha na leitura. Encerrando servidor.");
-       close(connfd);
-       close (listenfd);
-       exit(1);
-    }
+      n = recv(connfd, buf, MAXLINE,0);             
+      if (n <= 0) 
+      {
+         perror("Falha na leitura. Encerrando servidor.");
+         close(connfd);
+         close (listenfd);
+         exit(1);
+      }
 
-    printf("%s\n","Mensagem criptografada recebida:");
-    puts(buf);     
+      printf("%s\n","Mensagem criptografada recebida:");
+      puts(buf);
 
-    //recebe a chave
-    printf("Tamanho buffer: %d\n",strlen(buf));
-    n = recv(connfd, chave, MAXLINE,0);             
-    printf("Tamanho chave: %d",strlen(chave));
-    //decifra a mensagem
-    char *mensagem = decifra_mensagem(chave,buf,strlen(buf));
+      //recebe a chave
+      n = recv(connfd, chave, MAXLINE,0);             
+       
+      //decifra a mensagem
+      char *mensagem = decifra_mensagem(chave,buf,strlen(buf));
+      printf("A mensagem decifrada é: %s", mensagem);       
 
-    printf("\n\n%s","A mensagem decifrada é: ");
-    puts(mensagem); 
-    free(mensagem);
-      
-    //limpa as variáveis de conteúdo
-    buf = NULL;
-    chave = NULL;
-    
+      //limpa as variáveis de conteúdo
+      clean_entrada(buf);
+      clean_entrada(chave);
+      clean_entrada(mensagem);
+
+      puts("================================================================");
     }   
-
    //encerra a conexão
    close(connfd);
    close(listenfd);
