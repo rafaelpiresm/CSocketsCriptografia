@@ -91,7 +91,7 @@ int main (int argc, char **argv)
       n = recv(connfd, chave, MAXLINE,0);             
        
       //decifra a mensagem
-      char *mensagem = decifra_mensagem(chave,buf,strlen(chave));
+      char *mensagem = decifra_mensagem(chave,buf,MAXLINE);
       
       printf("A mensagem decifrada é: \n%s", mensagem);           
 
