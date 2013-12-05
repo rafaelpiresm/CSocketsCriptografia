@@ -9,21 +9,10 @@
 #define MAXLINE 4096 /*tamanho máximo de entrada*/
 #define SERV_PORT 3000 /*porta*/
 
-
-void clean_entrada(char *buf)
-{
-    int i;
-    for(i = 0; i < MAXLINE; i++)
-        buf[i] = '\0';
-}
-
-
 char *cifra_mensagem(char *palavra, char *chave, int tamanho)
 {
     //alocando memória dinamicamente para a chave
-    //char *palavra_cifrada = new char[tamanho];
-    char *palavra_cifrada = (char *)malloc(sizeof(char) * tamanho);
-
+    char * palavra_cifrada = new char[tamanho];
     int i = 0;
     for(i = 0; i < tamanho; i++)
     {
@@ -50,8 +39,7 @@ int gera_um_digito_chave ()
 char *gera_chave(char *chave, int tamanho)
 {
         int i;
-        //chave = new char[tamanho];
-        chave = (char *)malloc(sizeof(char) * tamanho);
+        chave = new char[tamanho];
         for (i = 0; i<tamanho; i++)        
         {
               int digito_randomico = gera_um_digito_chave();                    
@@ -65,7 +53,7 @@ int main(int argc, char **argv)
 {
     int sockfd;
     struct sockaddr_in servaddr;
-    char sendline[MAXLINE];
+    char sendline[MAXLINE], recvline[MAXLINE];
     char *chave;
     
     if (argc !=2) 
@@ -85,7 +73,7 @@ int main(int argc, char **argv)
     memset(&servaddr, 0, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
     servaddr.sin_addr.s_addr= inet_addr(argv[1]);
-    servaddr.sin_port =  htons(SERV_PORT);   
+    servaddr.sin_port =  htons(SERV_PORT); 
 
     //fazendo a conexão com o servidor
     if (connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr))<0) 
@@ -95,14 +83,13 @@ int main(int argc, char **argv)
     }
     else
     {
-        printf("\nConexão estabelecida com sucesso!\n");
-        printf("Host: %s",argv[1]);
+    	printf("\nConexão estabelecida com sucesso!\n");
+    	printf("Host: %s",argv[1]);
     }
-
 
     printf("\n\nDigite a mensagem a ser criptografada e enviada ao servidor:\n");
     while (fgets(sendline, MAXLINE, stdin) != NULL) 
-    {        
+    {
         //configura função randômica para geração automática da chave
         configura_start_random();        
 
@@ -110,13 +97,12 @@ int main(int argc, char **argv)
         chave = gera_chave(chave,strlen(sendline));
 
         //cifra a mensagem informada de acordo com a chave gerada
-        char *palavra_cifrada = cifra_mensagem(sendline,chave,MAXLINE);   
+        char *palavra_cifrada = cifra_mensagem(sendline,chave,strlen(chave));   
         printf("A palavra cifrada é: %s\n",palavra_cifrada);
         printf("A chave é: %s\n",chave);
 
         //envio da mensagem cifrada
-        int qtd_data_received = send(sockfd, palavra_cifrada, MAXLINE, 0);        
-        //clean_entrada(palavra_cifrada);
+        int qtd_data_received = send(sockfd, palavra_cifrada, MAXLINE, 0);
 
         if (qtd_data_received > 0)
         	printf("A palavra cifrada foi entregue!\n");
@@ -128,9 +114,6 @@ int main(int argc, char **argv)
 
         //envio chave gerada
         qtd_data_received = send(sockfd, chave, MAXLINE, 0);
-         
-        
-
         if (qtd_data_received > 0)
             printf("A chave foi entregue!\n");
         else
@@ -140,13 +123,9 @@ int main(int argc, char **argv)
         }                   
 
         printf("\n\nDigite a mensagem a ser criptografada e enviada ao servidor:\n");
+
         //desalocando memória alocada dinamicamente para a chave
-
-        free(chave);
-        free(palavra_cifrada);
-
-       
-        
+        delete(chave);
     }
     //saída OK para o SO
     exit(0);

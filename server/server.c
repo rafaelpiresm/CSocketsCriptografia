@@ -8,20 +8,20 @@
 
 #define MAXLINE 4096 /*tamanho máximo da entrada*/
 #define SERV_PORT 3000 /*porta*/
-#define MAX_CONNECTIONS 8 /*número máximo de conexões*/
+#define MAX_CONNECTIONS 1 /*número máximo de conexões*/
 
-char* clean_entrada(char buf[])
+void clean_entrada(char buf[])
 {
 	int i;
 	for(i = 0; i < MAXLINE; i++)
-		buf[i] = '\0';
-  return buf;
+		buf[i] = '\0';  
 }
 
 char *decifra_mensagem(char *chave, char *palavra_cifrada, int tamanho)
 {  
   //alocando memória dinamicamente para a palavra a ser decifrada
-  char *palavra_decifrada = new char[tamanho];  
+  //char *palavra_decifrada = new char[tamanho];  
+  char *palavra_decifrada = (char *)malloc(sizeof(char) * tamanho);
   int i = 0;
   for(i = 0; i < tamanho; i++)
   {
@@ -67,8 +67,9 @@ int main (int argc, char **argv)
 
    for ( ; ; ) 
    {   
-      char *buf = new char[MAXLINE];
-      char *chave = new char[MAXLINE];
+      //char *buf = new char[MAXLINE];
+    char buf[MAXLINE];
+    char chave[MAXLINE];
 
       //recebe a mensagem
       n = recv(connfd, buf, MAXLINE,0);             
@@ -81,8 +82,7 @@ int main (int argc, char **argv)
       }
 
       printf("%s\n","Mensagem criptografada recebida:");
-      puts(buf);
-      //printf("Mensagem criptografada recebida: %s\n",buf);
+      puts(buf);     
 
       //recebe a chave
       n = recv(connfd, chave, MAXLINE,0);             
@@ -93,11 +93,11 @@ int main (int argc, char **argv)
       printf("\n%s","A mensagem decifrada é: ");
       puts(mensagem);
       fflush(stdout);
-      delete(mensagem);
+      free(mensagem);
       
       //limpa as variáveis de conteúdo
-      //clean_entrada(buf);
-      //clean_entrada(chave);
+      clean_entrada(buf);
+      clean_entrada(chave);
       //clean_entrada(mensagem);            
       
     }   
