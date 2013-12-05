@@ -21,7 +21,9 @@ void clean_entrada(char *buf)
 char *cifra_mensagem(char *palavra, char *chave, int tamanho)
 {
     //alocando memória dinamicamente para a chave
-    char *palavra_cifrada = new char[tamanho];
+    //char *palavra_cifrada = new char[tamanho];
+    char *palavra_cifrada = (char *)malloc(sizeof(char) * tamanho);
+
     int i = 0;
     for(i = 0; i < tamanho; i++)
     {
@@ -48,7 +50,8 @@ int gera_um_digito_chave ()
 char *gera_chave(char *chave, int tamanho)
 {
         int i;
-        chave = new char[tamanho];
+        //chave = new char[tamanho];
+        chave = (char *)malloc(sizeof(char) * tamanho);
         for (i = 0; i<tamanho; i++)        
         {
               int digito_randomico = gera_um_digito_chave();                    
@@ -62,7 +65,7 @@ int main(int argc, char **argv)
 {
     int sockfd;
     struct sockaddr_in servaddr;
-    char sendline[MAXLINE], recvline[MAXLINE];
+    char sendline[MAXLINE];
     char *chave;
     
     if (argc !=2) 
@@ -107,14 +110,13 @@ int main(int argc, char **argv)
         chave = gera_chave(chave,strlen(sendline));
 
         //cifra a mensagem informada de acordo com a chave gerada
-        char *palavra_cifrada = cifra_mensagem(sendline,chave,strlen(chave));   
+        char *palavra_cifrada = cifra_mensagem(sendline,chave,MAXLINE);   
         printf("A palavra cifrada é: %s\n",palavra_cifrada);
         printf("A chave é: %s\n",chave);
 
         //envio da mensagem cifrada
-        int qtd_data_received = send(sockfd, palavra_cifrada, strlen(palavra_cifrada), 0);
-        delete(palavra_cifrada);
-        clean_entrada(palavra_cifrada);
+        int qtd_data_received = send(sockfd, palavra_cifrada, MAXLINE, 0);        
+        //clean_entrada(palavra_cifrada);
 
         if (qtd_data_received > 0)
         	printf("A palavra cifrada foi entregue!\n");
@@ -126,8 +128,8 @@ int main(int argc, char **argv)
 
         //envio chave gerada
         qtd_data_received = send(sockfd, chave, strlen(chave), 0);
-        delete(chave);        
-        clean_entrada(chave);
+         
+        
 
         if (qtd_data_received > 0)
             printf("A chave foi entregue!\n");
@@ -140,9 +142,11 @@ int main(int argc, char **argv)
         printf("\n\nDigite a mensagem a ser criptografada e enviada ao servidor:\n");
         //desalocando memória alocada dinamicamente para a chave
 
+        free(chave);
+        free(palavra_cifrada);
+
        
-       
-        fflush(stdout);
+        
     }
     //saída OK para o SO
     exit(0);

@@ -67,14 +67,12 @@ int main (int argc, char **argv)
    
 
    for ( ; ; ) 
-   {  
-      //char *buf = new char[MAXLINE];
+   {        
       char *buf = (char *)malloc(sizeof(char) * MAXLINE);
-      char *chave = (char *)malloc(sizeof(char) * MAXLINE);
-      //char *chave = new char[MAXLINE];
+      char *chave = (char *)malloc(sizeof(char) * MAXLINE);      
 
       //recebe a mensagem
-      n = recv(connfd, buf, MAXLINE,0);             
+      n = recv(connfd, buf, MAXLINE, 0);             
       if (n <= 0) 
       {
          perror("Falha na leitura. Encerrando servidor.");
@@ -84,28 +82,19 @@ int main (int argc, char **argv)
       }
 
       printf("%s\n","Mensagem criptografada recebida:");
-      puts(buf);
-      //printf("Mensagem criptografada recebida: %s\n",buf);
+      puts(buf);     
 
       //recebe a chave
-      n = recv(connfd, chave, MAXLINE,0);             
+      n = recv(connfd, chave, strlen(buf), 0);             
        
       //decifra a mensagem
-      char *mensagem = decifra_mensagem(chave,buf,strlen(buf));
+      char *mensagem = decifra_mensagem(chave,buf,MAXLINE);
 
       printf("\n%s","A mensagem decifrada é: ");
       puts(mensagem);      
       free(mensagem);
       free(chave);
       free(buf);
-      
-      //limpa as variáveis de conteúdo
-      clean_entrada(buf);
-      clean_entrada(chave);
-      clean_entrada(mensagem);            
-
-      buf = NULL;
-      
     }   
    //encerra a conexão
    close(connfd);
