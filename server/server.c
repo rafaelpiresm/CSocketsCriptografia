@@ -10,32 +10,34 @@
 #define SERV_PORT 3000 /*porta*/
 #define MAX_CONNECTIONS 8 /*número máximo de conexões*/
 
-char* clean_entrada(char buf[])
+void clean_entrada(char *buf)
 {
-	int i;
-	for(i = 0; i < MAXLINE; i++)
-		buf[i] = '\0';
-  return buf;
+        int i;
+        for(i = 0; i < MAXLINE; i++)
+                buf[i] = '\0';
 }
 
 char *decifra_mensagem(char *chave, char *palavra_cifrada, int tamanho)
 {  
   //alocando memória dinamicamente para a palavra a ser decifrada
-  char *palavra_decifrada = new char[tamanho];  
+  char *palavra_decifrada = new char[tamanho + 1];
+  //char *palavra_decifrada = (char *)malloc(sizeof(char) * tamanho +1);
   int i = 0;
   for(i = 0; i < tamanho; i++)
   {
     //algoritmo para decifrar a mensagem
     //C = C - K + 26 (mod 26)
     int c = int(chave[i]);
+    //int c = (int)chave[i];
     int p = int(palavra_cifrada[i]);
+    //int p = (int)palavra_cifrada[i];
     int caractre_decifrado = 0;
     if (c > p)
       caractre_decifrado = c - p  + 26 % 26; 
     else
       caractre_decifrado = p - c  + 26 % 26;
-      palavra_decifrada[i] = (char)caractre_decifrado;        
-  }     
+      palavra_decifrada[i] = char(caractre_decifrado);
+  }       
   return palavra_decifrada;  
 }
 
@@ -67,9 +69,8 @@ int main (int argc, char **argv)
 
    for ( ; ; ) 
    {   
-      char buf[MAXLINE];
-      char chave[MAXLINE];
-
+      char *buf = new char[MAXLINE];
+      char *chave = new char[MAXLINE];
       //recebe a mensagem
       n = recv(connfd, buf, MAXLINE,0);             
       if (n <= 0) 
@@ -82,25 +83,22 @@ int main (int argc, char **argv)
 
       printf("%s\n","Mensagem criptografada recebida:");
       puts(buf);
-      //printf("Mensagem criptografada recebida: %s\n",buf);
 
       //recebe a chave
-      n = recv(connfd, chave, MAXLINE,0);             
+      n = recv(connfd, chave, MAXLINE,0);          
        
       //decifra a mensagem
-      char *mensagem = decifra_mensagem(chave,buf,strlen(buf));
-
-      printf("\n%s","A mensagem decifrada é: ");
-      puts(mensagem);      
-      delete(mensagem);
-      //delete(chave);
-      //delete(buf);
+      char *mensagem = decifra_mensagem(chave,buf,MAXLINE);
       
+      printf("A mensagem decifrada é: \n%s", mensagem);           
+
       //limpa as variáveis de conteúdo
       clean_entrada(buf);
       clean_entrada(chave);
-      //clean_entrada(mensagem);            
-      
+      delete(mensagem);
+      //clean_entrada(mensagem);      
+
+      puts("================================================================");
     }   
    //encerra a conexão
    close(connfd);

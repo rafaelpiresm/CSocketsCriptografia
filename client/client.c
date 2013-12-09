@@ -5,18 +5,10 @@
 #include <netinet/in.h>
 #include <string.h>
 #include <arpa/inet.h>
+#include <unistd.h>
 
 #define MAXLINE 4096 /*tamanho máximo de entrada*/
 #define SERV_PORT 3000 /*porta*/
-
-
-void clean_entrada(char *buf)
-{
-    int i;
-    for(i = 0; i < MAXLINE; i++)
-        buf[i] = '\0';
-}
-
 
 char *cifra_mensagem(char *palavra, char *chave, int tamanho)
 {
@@ -32,7 +24,6 @@ char *cifra_mensagem(char *palavra, char *chave, int tamanho)
     }                   
     return palavra_cifrada;
 }
-
 
 void configura_start_random()
 {
@@ -54,7 +45,7 @@ char *gera_chave(char *chave, int tamanho)
               int digito_randomico = gera_um_digito_chave();                    
             chave[i] = (char)digito_randomico;        
         }                        
-        return chave;       
+        return chave;
 }
 
 
@@ -62,8 +53,7 @@ int main(int argc, char **argv)
 {
     int sockfd;
     struct sockaddr_in servaddr;
-    char sendline[MAXLINE], recvline[MAXLINE];
-    char *chave;
+    char sendline[MAXLINE];    
     
     if (argc !=2) 
     {
@@ -103,15 +93,15 @@ int main(int argc, char **argv)
         configura_start_random();        
 
         //gera a chave de acordo com o tamanho da entrada
-        chave = gera_chave(chave,strlen(sendline));
+        char *chave = gera_chave(chave,strlen(sendline));
 
         //cifra a mensagem informada de acordo com a chave gerada
-        char *palavra_cifrada = cifra_mensagem(sendline,chave,strlen(chave));   
+        char *palavra_cifrada = cifra_mensagem(sendline,chave,strlen(sendline));   
         printf("A palavra cifrada é: %s\n",palavra_cifrada);
         printf("A chave é: %s\n",chave);
 
         //envio da mensagem cifrada
-        int qtd_data_received = send(sockfd, palavra_cifrada, strlen(palavra_cifrada), 0);
+        int qtd_data_received = send(sockfd, palavra_cifrada, MAXLINE, 0);
 
         if (qtd_data_received > 0)
         	printf("A palavra cifrada foi entregue!\n");
@@ -122,23 +112,19 @@ int main(int argc, char **argv)
         }        
 
         //envio chave gerada
-        qtd_data_received = send(sockfd, chave, strlen(chave), 0);
+        qtd_data_received = send(sockfd, chave, MAXLINE, 0);
         if (qtd_data_received > 0)
             printf("A chave foi entregue!\n");
         else
         {
             printf("A chave não pode ser entregue!\n");
             exit(3);
-        }                   
+        }                           
 
         printf("\n\nDigite a mensagem a ser criptografada e enviada ao servidor:\n");
-        //desalocando memória alocada dinamicamente para a chave
 
-        delete(palavra_cifrada);
+        //desalocando memória alocada dinamicamente para a chave
         delete(chave);
-        clean_entrada(palavra_cifrada);
-        clean_entrada(chave);
-        fflush(stdin);
     }
     //saída OK para o SO
     exit(0);
