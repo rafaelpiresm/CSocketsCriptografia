@@ -8,55 +8,10 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
+#include "../algoritmo/algoritmo.h"
+
 #define MAXLINE 4096 /*tamanho máximo de entrada*/
 #define SERV_PORT 3000 /*porta*/
-
-char* 
-cifra_mensagem(char *palavra, char *chave, int tamanho)
-{
-     /* alocando memória dinamicamente para a chave */
-     char *palavra_cifrada = malloc(sizeof(char) * tamanho);
-     int i = 0;
-     for(i = 0; i < tamanho; i++)
-     {
-	  /*
-	  //algoritmo para a cifra damensagem
-	  //C = P + K (mod 26)
-	  */
-	  int caractere_cifrado = ((int) palavra[i]) + ((int) chave[i]) % 26;
-	  palavra_cifrada[i] = (char) caractere_cifrado;
-     }                   
-     
-     return palavra_cifrada;
-}
-
-void 
-configura_start_random()
-{
-     srand(time(NULL));
-}
-
-int 
-gera_um_digito_chave ()
-{
-     int r = 1 + (rand() % 25);
-     return r;
-}
- 
-char* 
-gera_chave(char *chave, int tamanho)
-{
-     int i;
-     chave = malloc(sizeof(char) * tamanho);
-     for (i = 0; i<tamanho; i++)        
-     {
-	  int digito_randomico = gera_um_digito_chave();                    
-	  chave[i] = (char)digito_randomico;        
-     }                        
-     
-     return chave;
-}
-
 
 int 
 main(int argc, char **argv)
@@ -111,17 +66,17 @@ main(int argc, char **argv)
 	  /*
 	  //configura função randômica para geração automática da chave
 	  */
-	  configura_start_random();        
+	  pim_configura_start_random();        
 	  
 	  /*
 	  //gera a chave de acordo com o tamanho da entrada
 	  */
-	  chave = gera_chave(chave,strlen(sendline));
+	  chave = pim_gera_chave(strlen(sendline));
 	  
 	  /*
 	  //cifra a mensagem informada de acordo com a chave gerada
 	  */
-	  palavra_cifrada = cifra_mensagem(sendline,chave,strlen(sendline));   
+	  palavra_cifrada = pim_cifra_mensagem(sendline, chave, strlen(sendline));   
 
 	  printf("A palavra cifrada é: %s\n",palavra_cifrada);
 	  printf("A chave é: %s\n",chave);

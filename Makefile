@@ -7,9 +7,11 @@ all: compile
 clean:
 	rm -rf client/client
 	rm -rf server/server
-	rm -rf algoritmo/algoritmo	
+	rm -rf algoritmo/algoritmo.o algoritmo/algoritmo	
 
 compile:
-	$(CC) -o server/server server/server.c $(CFLAGS)
-	$(CC) -o client/client client/client.c $(CFLAGS)
-	$(CC) -o algoritmo/algoritmo algoritmo/algoritmo.c $(CFLAGS)
+	$(CC) -c -o algoritmo/algoritmo.o algoritmo/algoritmo.c $(LDFLAGS)
+	$(CC) -o server/server server/server.c algoritmo/algoritmo.o $(CFLAGS) 
+	$(CC) -o client/client client/client.c algoritmo/algoritmo.o $(CFLAGS)
+	$(CC) -o algoritmo/algoritmo algoritmo/algoritmo_test.c algoritmo/algoritmo.o $(CFLAGS)
+

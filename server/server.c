@@ -6,6 +6,8 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "../algoritmo/algoritmo.h"
+
 #define MAXLINE 4096 /*tamanho máximo da entrada*/
 #define SERV_PORT 3000 /*porta*/
 #define MAX_CONNECTIONS 8 /*número máximo de conexões*/
@@ -15,36 +17,6 @@ void clean_entrada(char *buf)
      int i;
      for(i = 0; i < MAXLINE; i++)
 	  buf[i] = '\0';
-}
-
-char* 
-decifra_mensagem(char *chave, char *palavra_cifrada, int tamanho)
-{  
-     /*
-     //alocando memória dinamicamente para a palavra a ser decifrada
-     */
-     char *palavra_decifrada = malloc(sizeof(char) * (tamanho+1));
- 
-     int i = 0;
-
-     for(i = 0; i < tamanho; i++)
-     {
-	  /*
-	  //algoritmo para decifrar a mensagem
-	  //C = C - K + 26 (mod 26)
-	  */
-	  int c = (int) chave[i];
-	  int p = (int) palavra_cifrada[i];
-	  int caractre_decifrado = 0;
-	  if (c > p)
-	       caractre_decifrado = c - p  + 26 % 26; 
-	  else
-	       caractre_decifrado = p - c  + 26 % 26;
-
-	  palavra_decifrada[i] = (char) caractre_decifrado;
-     }       
-
-     return palavra_decifrada;  
 }
 
 int 
@@ -104,7 +76,7 @@ main (int argc, char **argv)
 	  //recebe a chave
 	  */
 	  n = recv(connfd, chave, MAXLINE,0);          
-	  mensagem = decifra_mensagem(chave, buf, MAXLINE);
+	  mensagem = pim_decifra_mensagem(chave, buf, MAXLINE);
 	  
 	  printf("A mensagem decifrada é: \n%s", mensagem);           
 

@@ -7,8 +7,6 @@
 
 #include "algoritmo.h"
 
-const int MAX = 20;
-
 void 
 pim_configura_start_random()
 {
@@ -73,37 +71,3 @@ pim_decifra_mensagem(char *chave, char *palavra_cifrada, int tamanho)
      return palavra_decifrada;  
 }
 
-int 
-main()
-{
-     char* palavra = malloc(sizeof(char) * MAX);
-     char *palavra_cifrada;
-     char *chave;
-     char *palavra_decifrada;
-     printf("Digite a palavra: ");
-
-     gets(palavra);
-     printf("\nA palavra digitada e %s", palavra);
-
-     pim_configura_start_random();        
-     chave = pim_gera_chave(strlen(palavra));
-     printf("\nO tamanho da chave eh: %i", (int) strlen(chave));
-     printf("\nA chave e: %s", chave);     	
-     
-     /* cifra */
-     palavra_cifrada = pim_cifra_mensagem(palavra,chave,strlen(chave));   
-     printf("\nA palavra cifrada eh: %s", palavra_cifrada);
-     
-     /* decifra */
-     palavra_decifrada = pim_decifra_mensagem(chave,palavra_cifrada,strlen(chave));
-     printf("\nA palavra decifrada eh: %s", palavra_decifrada);    
-     
-     free(chave);    	
-     free(palavra_cifrada);
-     free(palavra_decifrada);
-
-     printf("\nPressione uma tecla para finalizar...");
-     getchar();
-
-     return 0;
-}
