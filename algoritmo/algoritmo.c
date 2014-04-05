@@ -24,7 +24,7 @@ char*
 pim_gera_chave(int tamanho)
 {
      int i;
-     char* chave = malloc(sizeof(char) * tamanho);
+     char* chave = (char *)malloc(sizeof(char) * tamanho);
 
      for (i = 0; i<tamanho; i++)        
      {
@@ -38,7 +38,7 @@ pim_gera_chave(int tamanho)
 char* 
 pim_cifra_mensagem(char *palavra, char *chave, int tamanho)
 {
-     char* palavra_cifrada = malloc(sizeof(char) * tamanho);
+     char* palavra_cifrada = (char *)malloc(sizeof(char) * tamanho);
      int i = 0;
      for(i = 0; i < tamanho; i++)
      {
@@ -53,7 +53,7 @@ pim_cifra_mensagem(char *palavra, char *chave, int tamanho)
 char* 
 pim_decifra_mensagem(char *chave, char *palavra_cifrada, int tamanho)
 {
-     char *palavra_decifrada = malloc(sizeof(char) * tamanho);
+     char *palavra_decifrada = (char *) malloc(sizeof(char) * tamanho);
      int i = 0;
      for(i = 0; i < tamanho; i++)
      {

@@ -13,5 +13,5 @@ compile:
 	$(CC) -c -o algoritmo/algoritmo.o algoritmo/algoritmo.c $(LDFLAGS)
 	$(CC) -o server/server server/server.c algoritmo/algoritmo.o $(CFLAGS) 
 	$(CC) -o client/client client/client.c algoritmo/algoritmo.o $(CFLAGS)
-	$(CC) -o algoritmo/algoritmo algoritmo/algoritmo_test.c algoritmo/algoritmo.o $(CFLAGS)
+
 

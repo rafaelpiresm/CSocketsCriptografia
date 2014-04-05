@@ -54,8 +54,8 @@ main (int argc, char **argv)
      for ( ; ; ) 
      {   
 	  char* mensagem;
-	  char *buf = malloc(sizeof(char) * MAXLINE);
-	  char *chave = malloc(sizeof(char) * MAXLINE);
+	  char *buf = (char *) malloc(sizeof(char) * MAXLINE);
+	  char *chave = (char *) malloc(sizeof(char) * MAXLINE);
 
 	  /*
 	  //recebe a mensagem
