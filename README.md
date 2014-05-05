@@ -1,4 +1,4 @@
 PIM-Criptografia
 ================
 
-Source do PIM. Canvas do projeto: http://canvanizer.com/canvas/NQID2CrmjzQ
+Pequena ferramenta para troca de mensagens via TCP/IP
